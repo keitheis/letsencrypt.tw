@@ -191,12 +191,12 @@ ssl_certificate_key /etc/letsencrypt.sh/certs/<span class="yellow">letsencrypt.t
 
 <pre>
 # for Apache
-0 0 * * * root sleep $(expr $(printf "\%d" "0x$(hostname | md5sum | cut -c 1-8)") \% 86400); ( /etc/letsencrypt.sh/letsencrypt.sh -c -d <span class="yellow">letsencrypt.tw</span>; /usr/sbin/service apache2 reload ) &gt; /tmp/letsencrypt.sh-<span class="yellow">letsencrypt.tw</span>.log 2&gt;&amp;1
+0 0 * * * root sleep $(expr $(printf "%d" "0x$(hostname | md5sum | cut -c 1-8)") \% 86400); ( /etc/letsencrypt.sh/letsencrypt.sh -c -d <span class="yellow">letsencrypt.tw</span>; /usr/sbin/service apache2 reload ) &gt; /tmp/letsencrypt.sh-<span class="yellow">letsencrypt.tw</span>.log 2&gt;&amp;1
 </pre>
 
 <pre>
 # for nginx
-0 0 * * * root sleep $(expr $(printf "\%d" "0x$(hostname | md5sum | cut -c 1-8)") \% 86400); ( /etc/letsencrypt.sh/letsencrypt.sh -c -d <span class="yellow">letsencrypt.tw</span>; /usr/sbin/service nginx reload ) &gt; /tmp/letsencrypt.sh-<span class="yellow">letsencrypt.tw.log</span> 2&gt;&amp;1
+0 0 * * * root sleep $(expr $(printf "%d" "0x$(hostname | md5sum | cut -c 1-8)") \% 86400); ( /etc/letsencrypt.sh/letsencrypt.sh -c -d <span class="yellow">letsencrypt.tw</span>; /usr/sbin/service nginx reload ) &gt; /tmp/letsencrypt.sh-<span class="yellow">letsencrypt.tw.log</span> 2&gt;&amp;1
 </pre>
 
 <h5>規劃</h5>
@@ -209,7 +209,7 @@ ssl_certificate_key /etc/letsencrypt.sh/certs/<span class="yellow">letsencrypt.t
 
 <p>在 cron job 裡面每天執行是因為 letsencrypt.sh 會自己檢查憑證有效期限，如果還有一個月以上的時間有效就不會 renew，所以不需要擔心每天執行會造成 Let's Encrypt 的伺服器產生負擔。</p>
 
-<p>在 cron job 中的 <code>sleep $(expr $(printf "\%d" "0x$(hostname | md5sum | cut -c 1-8)") \% 86400)</code> 設計是利用機器名稱產生出十六進位 hash 值，抓一部分轉成十進位後除以一天的秒數，得到餘數後先停這個秒數再跑 <code>letsencrypt.sh</code>，這樣可以避免同時間有太多機器到 Let's Encrypt 的伺服器，造成類似 DDoS 的攻擊。</p>
+<p>在 cron job 中的 <code>sleep $(expr $(printf "%d" "0x$(hostname | md5sum | cut -c 1-8)") \% 86400)</code> 設計是利用機器名稱產生出十六進位 hash 值，抓一部分轉成十進位後除以一天的秒數，得到餘數後先停這個秒數再跑 <code>letsencrypt.sh</code>，這樣可以避免同時間有太多機器到 Let's Encrypt 的伺服器，造成類似 DDoS 的攻擊。</p>
 
 <h5>參考資料</h5>
 
